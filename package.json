@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jerrica-mj/tinyapp/issues"
   },
-  "homepage": "https://github.com/jerrica-mj/tinyapp#readme"
+  "homepage": "https://github.com/jerrica-mj/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
