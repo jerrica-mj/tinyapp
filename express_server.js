@@ -9,6 +9,7 @@ const PORT = 8080; // default port 8080
 // Set up EJS as templating engine for Express
 app.set("view engine", "ejs");
 
+// Object to keep track of URLs and shortened forms
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -22,25 +23,34 @@ app.get("/", (req, resp) => {
 });
 
 // add additional endpoints/paths
-app.get("/urls.json", (req, resp) => {
+app.get("/urls.json", (req, res) => {
   // respond with the urlDatabase object as a JSON string
-  resp.json(urlDatabase);
+  res.json(urlDatabase);
 });
 
-app.get("/hello", (req, resp) => {
+app.get("/hello", (req, res) => {
   // send HTML content response
-  resp.send("<html><body>Hello <b>World</b></body></html>\n");
+  res.send("<html><body>Hello <b>World</b></body></html>\n");
+});
+
+
+// Passed urlDatabase object to views/urls_index.ejs
+app.get("/urls", (req,res) => {
+  // variables need to be sent to EJS templates inside an object
+  const templateVars = {urls: urlDatabase};
+  // omit "views/" in path as EJS looks there for .ejs files by convention
+  res.render("urls_index", templateVars);
 });
 
 // see if a variable created in one request is accessible in another
 // they are not accessible in other request scopes, and will cause a reference error at that endpoint/url if the endpoint calls a value out of scope
-app.get("/set", (req, resp) => {
+app.get("/set", (req, res) => {
   const a = 1;
-  resp.send(`a = ${a}`);
+  res.send(`a = ${a}`);
 });
 
-app.get("/fetch", (req, resp) => {
-  resp.send(`a = ${a}`);
+app.get("/fetch", (req, res) => {
+  res.send(`a = ${a}`);
 });
 
 
