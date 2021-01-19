@@ -16,11 +16,33 @@ const urlDatabase = {
 };
 
 
+// FUNCTION(S)
+/**
+ * returns a string of 6 random alphanumeric characters
+ * *TEMP* used to simulate generating a "unique" shortURL
+ */
+const generateRandomString = () => {
+  const length = 6;
+  // generate random alphanumeric string with toString(36), removing "0."
+  let chars = Math.random().toString(36).substr(2, length);
+  let result = chars.split("");
+  // randomly capitalize some result characters
+  for (let i = 0; i < length; i++) {
+    if (Math.round(Math.random()) === 1) {
+      result[i] = result[i].toUpperCase();
+    }
+  }
+  return result.join("");
+}
+console.log(generateRandomString());
+
+
 // ENDPOINT/PATH HANDLING
 // POST REQUESTS
 // require middleware to parse POST request body (buffer) to be readable
 // must come before all route handling, so body-parser library can convert the request body from "Buffer" to readable string, then add the data to the req(request) object under the key "body"
 const bodyParser = require("body-parser");
+const { request } = require("express");
 app.use(bodyParser.urlencoded({extended: true}));
 
 // Handle POST request for "urls_new" form
