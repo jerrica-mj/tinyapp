@@ -51,7 +51,7 @@ app.post("/urls", (req, res) => {
   // log the POST request body (parsed to JS object) to the console
   console.log(req.body);
   // respond with generated shortURL
-  res.send(generateRandomString());
+  res.send(`Short URL for ${req.body.longURL}: ${generateRandomString()}`);
 });
 
 
