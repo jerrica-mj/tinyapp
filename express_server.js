@@ -52,9 +52,10 @@ app.post("/urls", (req, res) => {
   console.log(req.body);
   // make shortURL
   const shortURL = generateRandomString();
-  // save shortURL-longURL key-value pair to urlDatabase & send response
+  // save shortURL-longURL key-value pair to urlDatabase
   urlDatabase[shortURL] = req.body.longURL;
-  res.send(`Short URL for ${req.body.longURL}: ${shortURL}`);
+  // redirect client to a new page showing their long & shortURL
+  res.redirect(`/urls/${shortURL}`);
 });
 
 
