@@ -34,7 +34,7 @@ const generateRandomString = () => {
   }
   return result.join("");
 }
-console.log(generateRandomString());
+
 
 
 // ENDPOINT/PATH HANDLING
@@ -50,8 +50,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.post("/urls", (req, res) => {
   // log the POST request body (parsed to JS object) to the console
   console.log(req.body);
-  // respond with "Ok" (we will replace this)
-  res.send("Ok");
+  // respond with generated shortURL
+  res.send(generateRandomString());
 });
 
 
