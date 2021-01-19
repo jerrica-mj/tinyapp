@@ -11,6 +11,8 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+
+// ENDPOINT/PATH HANDLING
 // handler for the root path, "/"
 app.get("/", (req, resp) => {
   resp.send("Hello!");
@@ -27,7 +29,19 @@ app.get("/hello", (req, resp) => {
   resp.send("<html><body>Hello <b>World</b></body></html>\n");
 });
 
+// see if a variable created in one request is accessible in another
+// they are not accessible in other request scopes, and will cause a reference error at that endpoint/url if the endpoint calls a value out of scope
+app.get("/set", (req, resp) => {
+  const a = 1;
+  resp.send(`a = ${a}`);
+});
 
+app.get("/fetch", (req, resp) => {
+  resp.send(`a = ${a}`);
+});
+
+
+// LISTEN ON PORT
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
