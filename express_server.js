@@ -23,6 +23,14 @@ const urlDatabase = {
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
+// Handle POST request for "urls_new" form
+// should this go before or after the get request route handlers?
+app.post("/urls", (req, res) => {
+  // log the POST request body (parsed to JS object) to the console
+  console.log(req.body);
+  // respond with "Ok" (we will replace this)
+  res.send("Ok");
+});
 
 
 // GET REQUESTS
