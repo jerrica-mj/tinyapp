@@ -11,8 +11,15 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+// handler for the root path, "/"
 app.get("/", (req, resp) => {
   resp.send("Hello!");
+});
+
+// add additional endpoints/paths
+app.get("/urls.json", (req, resp) => {
+  // respond with the urlDatabase object as a JSON string
+  resp.json(urlDatabase);
 });
 
 app.listen(PORT, () => {
