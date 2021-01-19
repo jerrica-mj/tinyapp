@@ -18,8 +18,23 @@ const urlDatabase = {
 
 // ENDPOINT/PATH HANDLING
 // handler for the root path, "/"
-app.get("/", (req, resp) => {
-  resp.send("Hello!");
+app.get("/", (req, res) => {
+  res.send("Hello!");
+});
+
+// Pass urlDatabase object to "views/urls_index.ejs"
+app.get("/urls", (req, res) => {
+  // variables need to be sent to EJS templates inside an object
+  const templateVars = {urls: urlDatabase};
+  // omit "views/" in path as EJS looks there for .ejs files by convention
+  res.render("urls_index", templateVars);
+});
+
+// Pass urlDatabase to "views/urls_show.ejs"
+// the : means that the id (shortURL) is a route parameter that will be available in the "req.params" object
+app.get("/urls/:shortURL", (req, res) => {
+  const templateVars = {shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
+  res.render("urls_show", templateVars);
 });
 
 // add additional endpoints/paths
@@ -31,15 +46,6 @@ app.get("/urls.json", (req, res) => {
 app.get("/hello", (req, res) => {
   // send HTML content response
   res.send("<html><body>Hello <b>World</b></body></html>\n");
-});
-
-
-// Passed urlDatabase object to views/urls_index.ejs
-app.get("/urls", (req,res) => {
-  // variables need to be sent to EJS templates inside an object
-  const templateVars = {urls: urlDatabase};
-  // omit "views/" in path as EJS looks there for .ejs files by convention
-  res.render("urls_index", templateVars);
 });
 
 // see if a variable created in one request is accessible in another
