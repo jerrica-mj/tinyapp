@@ -30,6 +30,13 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+// Handle GET (render) and POST (submit) routes for "urls_new" form
+// this must be before "/urls/:shortURL" handler, or express will thisn that "new" is a route parameter--order routes from most to least specific
+app.get("/urls/new", (req, res) => {
+  res.render("urls_new");
+});
+
+
 // Pass urlDatabase to "views/urls_show.ejs"
 // the : means that the id (shortURL) is a route parameter that will be available in the "req.params" object
 app.get("/urls/:shortURL", (req, res) => {
@@ -50,14 +57,14 @@ app.get("/hello", (req, res) => {
 
 // see if a variable created in one request is accessible in another
 // they are not accessible in other request scopes, and will cause a reference error at that endpoint/url if the endpoint calls a value out of scope
-app.get("/set", (req, res) => {
-  const a = 1;
-  res.send(`a = ${a}`);
-});
+// app.get("/set", (req, res) => {
+//   const a = 1;
+//   res.send(`a = ${a}`);
+// });
 
-app.get("/fetch", (req, res) => {
-  res.send(`a = ${a}`);
-});
+// app.get("/fetch", (req, res) => {
+//   res.send(`a = ${a}`);
+// });
 
 
 // LISTEN ON PORT
