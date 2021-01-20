@@ -15,6 +15,7 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+// ----------------
 
 // FUNCTION(S)
 /**
@@ -36,9 +37,14 @@ const generateRandomString = () => {
 }
 
 
+// ------------------------------------------------------------------
+
 
 // ENDPOINT/PATH HANDLING
+
+// ----------------
 // POST REQUESTS
+
 // require middleware to parse POST request body (buffer) to be readable
 // must come before all route handling, so body-parser library can convert the request body from "Buffer" to readable string, then add the data to the req(request) object under the key "body"
 const bodyParser = require("body-parser");
@@ -52,14 +58,29 @@ app.post("/urls", (req, res) => {
   console.log(req.body);
   // make shortURL
   const shortURL = generateRandomString();
+
+  // check that longURLs are prepended with "http(s)://www."
+  let longURL = req.body.longURL.split(".");
+  if (longURL[0] !== "http://www" || longURL[0] !== "https://www") {
+    if (longURL[0] === "www") {
+      // input ex: "www.google.com" => add "http://" to [0]
+      longURL[0] = "http://" + longURL[0];
+    } else {
+      // input ex: "google.com" => add "http://www." to [0]
+      longURL[0] = "http://www." + longURL[0];
+    }
+  }
+
   // save shortURL-longURL key-value pair to urlDatabase
-  urlDatabase[shortURL] = req.body.longURL;
+  urlDatabase[shortURL] = longURL.join(".");
   // redirect client to a new page showing their long & shortURL
   res.redirect(`/urls/${shortURL}`);
 });
 
 
+// ----------------
 // GET REQUESTS
+
 // handler for the root path, "/"
 app.get("/", (req, res) => {
   res.send("Hello!");
@@ -87,6 +108,12 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+
+// handle shortURL redirect to longURL
+app.get("/u/:shortURL", (req, res) => {
+  res.redirect(urlDatabase[req.params.shortURL]);
+});
+
 // // add additional endpoints/paths
 // app.get("/urls.json", (req, res) => {
 //   // respond with the urlDatabase object as a JSON string
@@ -108,6 +135,9 @@ app.get("/urls/:shortURL", (req, res) => {
 // app.get("/fetch", (req, res) => {
 //   res.send(`a = ${a}`);
 // });
+
+
+// ------------------------------------------------------------------
 
 
 // LISTEN ON PORT
