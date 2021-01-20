@@ -111,7 +111,8 @@ app.get("/urls/:shortURL", (req, res) => {
 
 // handle shortURL redirect to longURL
 app.get("/u/:shortURL", (req, res) => {
-  res.redirect(urlDatabase[req.params.shortURL]);
+  const longURL = urlDatabase[req.params.shortURL]
+  res.redirect(longURL);
 });
 
 // // add additional endpoints/paths
