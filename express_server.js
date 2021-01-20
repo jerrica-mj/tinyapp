@@ -36,6 +36,21 @@ const generateRandomString = () => {
   return result.join("");
 };
 
+// function to ensure all longURLs start with "http://www."
+const prependURL = (url) => {
+  let longURL = url.split(".");
+  if (longURL[0] !== "http://www" || longURL[0] !== "https://www") {
+    if (longURL[0] === "www") {
+      // input ex: "www.google.com" => add "http://" to [0]
+      longURL[0] = "http://" + longURL[0];
+    } else {
+      // input ex: "google.com" => add "http://www." to [0]
+      longURL[0] = "http://www." + longURL[0];
+    }
+  }
+  return longURL.join(".");
+};
+
 
 // ------------------------------------------------------------------
 
@@ -58,18 +73,9 @@ app.post("/urls", (req, res) => {
   console.log(req.body);
   const shortURL = generateRandomString();
   // check that longURLs are prepended with "http(s)://www."
-  let longURL = req.body.longURL.split(".");
-  if (longURL[0] !== "http://www" || longURL[0] !== "https://www") {
-    if (longURL[0] === "www") {
-      // input ex: "www.google.com" => add "http://" to [0]
-      longURL[0] = "http://" + longURL[0];
-    } else {
-      // input ex: "google.com" => add "http://www." to [0]
-      longURL[0] = "http://www." + longURL[0];
-    }
-  }
+  const longURL = prependURL(req.body.longURL);
   // save shortURL-longURL key-value pair to urlDatabase
-  urlDatabase[shortURL] = longURL.join(".");
+  urlDatabase[shortURL] = longURL;
   // redirect client to a new page showing their long & shortURL
   res.redirect(`/urls/${shortURL}`);
 });
