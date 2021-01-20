@@ -92,7 +92,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 
 // handle requests from update buttons
-app.post("/urls/:shortURL/update", (req, res) => {
+app.post("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const newLongURL = prependURL(req.body.longURL);
   console.log(`Updated '${shortURL}' to redirect to '${newLongURL}' instead of '${urlDatabase[shortURL]}'`);
