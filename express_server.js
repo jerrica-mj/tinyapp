@@ -111,6 +111,10 @@ app.get("/urls/:shortURL", (req, res) => {
 
 // handle shortURL redirect to longURL
 app.get("/u/:shortURL", (req, res) => {
+  if (!urlDatabase[req.params.shortURL]) {
+    // if shortURL-longURL is not in the database, redirect to "create" page--attempt to deal with edge case, but could use 404?
+    res.redirect("/urls/new");
+  }
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
