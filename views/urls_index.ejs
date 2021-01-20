@@ -23,7 +23,8 @@
           <tr>
             <th scope="col">Short URL</th>
             <th scope="col">Long URL</th>
-            <th scope="col"></th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +35,8 @@
               <!-- print/show the url key value pairs, one in each column, on separate rows -->
               <td><%= url %></td>
               <td><%= urls[url] %></td>
+              <!-- add an 'edit' link -->
+              <td><a href="/urls/<%= url %>">Edit</a></td>
               <!-- add a delete button -->
               <td><form method="POST" action="/urls/<%= url %>/delete"><button class="btn btn-outline-danger" type="submit">Delete</button></form></td>
             </tr>
