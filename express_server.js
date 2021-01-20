@@ -91,6 +91,22 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 
+// handle requests from update buttons
+app.post("/urls/:shortURL/update", (req, res) => {
+  const shortURL = req.params.shortURL;
+  const newLongURL = prependURL(req.body.longURL);
+  console.log(`Updated '${shortURL}' to redirect to '${newLongURL}' instead of '${urlDatabase[shortURL]}'`);
+  // if property doesn't exist, redirect to 'create' page
+  if (!urlDatabase.hasOwnProperty(shortURL)) {
+    res.redirect('/urls/new');
+  }
+  // update existing property's value and redirect to '/urls' page
+  urlDatabase[shortURL] = newLongURL;
+  // redirect back to "/urls" page
+  res.redirect("/urls");
+});
+
+
 // ----------------
 // GET REQUESTS
 
