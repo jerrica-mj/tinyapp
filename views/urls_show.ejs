@@ -25,13 +25,15 @@
       <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
     </div>
 
-    <hr>
+    <br>
+    <div class="card-footer text-muted">
+      <!-- Add an "update" form with button -->
+      <!-- form tag: "action" says to which URL to submit the form, "method" tells which HTTP method to use when submitting -->
       <div style="margin: auto;">
-        <!-- Add an "update" form with button -->
-        <!-- form tag: "action" says to which URL to submit the form, "method" tells which HTTP method to use when submitting -->
+        <h4 class="card-title">Edit</h4>
         <form class="form-inline" action="/urls/<%= shortURL %>" method="POST">
-          <div class="form-group mb-2">
-            <label for="longURL">Update the URL:</label>
+          <div class="form-group mb-2" style="margin: auto;">
+            <label for="longURL">New URL:</label>
             <!-- input tag: "name" id's data we're sending on form submission -->
             <input class="form-control" type="text" name="longURL" placeholder="http://" style="width: 300px; margin: 1em">
             <!-- add a hidden field to pass the shortURL to server -->
@@ -40,7 +42,8 @@
           </div>
         </form>
       </div>
-    <div class="card-footer text-muted"></div>
+
+    </div>
   </div>
 
   <!-- Bootstrap JS -->
