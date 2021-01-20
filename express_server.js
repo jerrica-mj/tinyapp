@@ -34,7 +34,7 @@ const generateRandomString = () => {
     }
   }
   return result.join("");
-}
+};
 
 
 // ------------------------------------------------------------------
@@ -111,7 +111,7 @@ app.get("/urls/:shortURL", (req, res) => {
 
 // handle shortURL redirect to longURL
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL]
+  const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
 
