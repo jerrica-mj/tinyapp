@@ -56,9 +56,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.post("/urls", (req, res) => {
   // log the POST request body (parsed to JS object) to the console
   console.log(req.body);
-  // make shortURL
   const shortURL = generateRandomString();
-
   // check that longURLs are prepended with "http(s)://www."
   let longURL = req.body.longURL.split(".");
   if (longURL[0] !== "http://www" || longURL[0] !== "https://www") {
@@ -70,11 +68,20 @@ app.post("/urls", (req, res) => {
       longURL[0] = "http://www." + longURL[0];
     }
   }
-
   // save shortURL-longURL key-value pair to urlDatabase
   urlDatabase[shortURL] = longURL.join(".");
   // redirect client to a new page showing their long & shortURL
   res.redirect(`/urls/${shortURL}`);
+});
+
+
+// handle requests from delete buttons on "/urls" page
+app.post("/urls/:shortURL/delete", (req, res) => {
+  console.log(`Deleted: "${req.params.shortURL}": "${urlDatabase[req.params.shortURL]}" from urlDatabase`);
+  // use "delete" to remove shortURL property from urlDatabase object
+  delete urlDatabase[req.params.shortURL];
+  // redirect back to the "/urls" page
+  res.redirect("/urls");
 });
 
 

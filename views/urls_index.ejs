@@ -32,6 +32,8 @@
               <!-- print/show the url key value pairs, one in each column, on separate rows -->
               <td><%= url %></td>
               <td><%= urls[url] %></td>
+              <!-- add a delete button -->
+              <td><form method="POST" action="/urls/<%= url %>/delete"><button class="btn btn-outline-danger" type="submit">Delete</button></form></td>
             </tr>
           <% } %>
         </tbody>
