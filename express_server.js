@@ -130,7 +130,10 @@ app.get("/", (req, res) => {
 // Pass urlDatabase object to "views/urls_index.ejs"
 app.get("/urls", (req, res) => {
   // variables need to be sent to EJS templates inside an object
-  const templateVars = {urls: urlDatabase};
+  const templateVars = {
+    username: req.cookies["username"],
+    urls: urlDatabase
+  };
   // omit "views/" in path as EJS looks there for .ejs files by convention
   res.render("urls_index", templateVars);
 });
@@ -138,14 +141,21 @@ app.get("/urls", (req, res) => {
 // Handle GET (render) route for "urls_new" form
 // this must be before "/urls/:shortURL" handler, or express will think that "new" is a route parameter--order routes from most to least specific
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  const templateVars = {
+    username: req.cookies["username"]
+  };
+  res.render("urls_new", templateVars);
 });
 
 
 // Pass urlDatabase to "views/urls_show.ejs"
 // the : means that the id (shortURL) is a route parameter that will be available in the "req.params" object
 app.get("/urls/:shortURL", (req, res) => {
-  const templateVars = {shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
+  const templateVars = {
+    username: req.cookies["username"],
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL]
+  };
   res.render("urls_show", templateVars);
 });
 
