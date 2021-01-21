@@ -156,6 +156,7 @@ app.get("/urls/new", (req, res) => {
 });
 
 
+
 // Pass urlDatabase to "views/urls_show.ejs"
 // the : means that the id (shortURL) is a route parameter that will be available in the "req.params" object
 app.get("/urls/:shortURL", (req, res) => {
@@ -177,6 +178,21 @@ app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });
+
+
+// Registration Page
+app.get("/register", (req, res) => {
+  const templateVars = {
+    username: req.cookies["username"]
+  };
+  res.render("user_register", templateVars);
+});
+
+// app.post("/register", (req, res) => {
+
+//   res.redirect("");
+// });
+
 
 // // add additional endpoints/paths
 // app.get("/urls.json", (req, res) => {
