@@ -12,11 +12,28 @@ app.set("view engine", "ejs");
 // Set up cookie-parser for use (README: https://github.com/expressjs/cookie-parser)
 app.use(cookieParser());
 
+//
+// DATA STORES
+//
 // Object to keep track of URLs and shortened forms
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+// App Users (registered)
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+  "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
+};
+
 
 // ----------------
 
