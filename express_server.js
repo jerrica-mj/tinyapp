@@ -229,14 +229,13 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  // add new user
+  // add new user--only forms with email and password submitted (html form input required)
   const email = req.body.email;
   const password = req.body.password;
   const userExist = getUserByEmail(email);
   if (userExist) {
-    // redirect back to registration page
-    // TODO: setup error message on page
-    res.redirect("/register");
+    // if email already exists in users{}, send 400 (bad request)
+    res.status(400).send(`Uh oh, it looks like a user already exists with email: ${email}. Try logging in instead.`);
   }
   const userID = "U" + generateRandomString();
   users[userID] = {
