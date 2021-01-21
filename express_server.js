@@ -98,7 +98,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   const newLongURL = prependURL(req.body.longURL);
-  console.log(`Updated '${shortURL}' to redirect to '${newLongURL}' instead of '${urlDatabase[shortURL]}'`);
+  // console.log(`Updated '${shortURL}' to redirect to '${newLongURL}' instead of '${urlDatabase[shortURL]}'`);
   // if property doesn't exist, redirect to 'create' page
   if (!urlDatabase.hasOwnProperty(shortURL)) {
     res.redirect('/urls/new');
@@ -112,7 +112,7 @@ app.post("/urls/:shortURL", (req, res) => {
 
 // login POST request
 app.post("/login", (req, res) => {
-  console.log("username:", req.body.username);
+  // console.log("username:", req.body.username);
   // set a cookie named "username" with the submitted value
   res.cookie("username", req.body.username);
   res.redirect("/urls");
