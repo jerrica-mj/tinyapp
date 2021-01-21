@@ -231,6 +231,7 @@ app.post("/register", (req, res) => {
   }
   const userID = "U" + generateRandomString();
   users[userID] = {
+    userID,
     email,
     password
   };
