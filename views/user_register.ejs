@@ -21,20 +21,20 @@
 
     <!-- form tag: "action" says to which URL to submit the form, "method" tells which HTTP method to use when submitting -->
     <form action="/register" method="POST" class="pt-3">
-      <!-- email -->
+      <!-- email (required) -->
       <div class="form-group row">
         <label for="email" class="col-sm-1 mr-4 col-form-label">Email:</label>
         <div class="col-sm-5">
           <!-- input tag: "name" id's data we're sending on form submission -->
-          <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
+          <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
           <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
         </div>
       </div>
-      <!-- password -->
+      <!-- password (required) -->
       <div class="form-group row">
         <label for="password" class="col-sm-1 mr-4 col-form-label">Password:</label>
         <div class="col-sm-5">
-          <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+          <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
         </div>
       </div>
       <!-- submit/register button -->
