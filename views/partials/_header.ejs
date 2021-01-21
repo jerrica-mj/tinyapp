@@ -18,16 +18,28 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
 
-      <!-- login form -->
-      <form action="/login" method="POST" class="form-inline mr-0 ml-auto align-middle">
+      <!-- logout form (if logged in => username defined) -->
+      <% if (username) { %>
+      <form action="/logout" method="POST" class="form-inline mr-0 ml-auto align-middle">
         <div class="form-group align-middle">
           <!-- display username (when logged in) -->
-          <label>Logged In As: <%= username %></label>
+          <label for="username" style="margin-right: 1em">Logged In As: <%= username %></label>
+          <!-- use hidden input to pass the username to the server -->
+          <input class="form-control" type="hidden" name="username" value=<%= username %>>
+          <button type="submit" class="btn btn-outline-dark">Logout</button>
+        </div>
+      </form>
+
+      <% } else { %>
+      <!-- login form (if not logged in) -->
+      <form action="/login" method="POST" class="form-inline mr-0 ml-auto align-middle">
+        <div class="form-group align-middle">
           <!-- input tag: "name" id's data we're sending on form submission -->
           <input class="form-control" type="text" name="username" placeholder="Username" style="width: 250px; margin: 1em">
           <button type="submit" class="btn btn-outline-dark">Login</button>
         </div>
       </form>
+      <% } %>
     </div>
 
   </nav>

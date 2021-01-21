@@ -119,6 +119,14 @@ app.post("/login", (req, res) => {
 });
 
 
+// logout POST request
+app.post("/logout", (req, res) => {
+  // clear the "username" cookie
+  res.clearCookie("username");
+  res.redirect("/urls");
+});
+
+
 // ----------------
 // GET REQUESTS
 
