@@ -71,6 +71,20 @@ const prependURL = (url) => {
   return longURL.join(".");
 };
 
+/**
+ * Function to lookup a user by their email
+ * Input: user email to lookup
+ * Return: user object, or false if not found
+ */
+const getUserByEmail = (queryEmail) => {
+  for (const userID in users) {
+    if (users[userID].email === queryEmail) {
+      return users[userID];
+    }
+  }
+  return false;
+};
+
 
 // ------------------------------------------------------------------
 
@@ -205,10 +219,25 @@ app.get("/register", (req, res) => {
   res.render("user_register", templateVars);
 });
 
-// app.post("/register", (req, res) => {
-
-//   res.redirect("");
-// });
+app.post("/register", (req, res) => {
+  // add new user
+  const email = req.body.email;
+  const password = req.body.password;
+  const userExist = getUserByEmail(email);
+  if (userExist) {
+    // redirect back to registration page
+    // TODO: setup error message on page
+    res.redirect("/register");
+  }
+  const userID = "U" + generateRandomString();
+  users[userID] = {
+    email,
+    password
+  };
+  // console.log("Added:", userID, users[userID]); // DEBUGGER
+  res.cookie("user_id", userID);
+  res.redirect("/urls");
+});
 
 
 // // add additional endpoints/paths
