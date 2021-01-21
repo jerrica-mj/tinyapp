@@ -3,16 +3,31 @@
 
 
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-success">
+  <nav class="navbar navbar-expand-md navbar-dark bg-success" style="height: 60px;">
     <a class="navbar-brand" href="/urls">TinyApp</a>
+
+    <!-- button to show collapsed nav menu on narrow screens -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+    <!-- nav bar items -- auto-collapse on narrow screens -->
+    <div class="collapse navbar-collapse d-flex" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
+
+      <!-- login form -->
+      <form action="/login" method="POST" class="form-inline mr-0 ml-auto align-middle">
+        <div class="form-group align-middle">
+          <!-- <label for="username">New URL:</label> -->
+          <!-- input tag: "name" id's data we're sending on form submission -->
+          <input class="form-control" type="text" name="username" placeholder="Username" style="width: 250px; margin: 1em">
+          <button type="submit" class="btn btn-outline-dark">Login</button>
+        </div>
+      </form>
     </div>
+
   </nav>
 </header>
