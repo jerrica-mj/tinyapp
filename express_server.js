@@ -141,26 +141,6 @@ app.post("/urls/:shortURL", (req, res) => {
 });
 
 
-// login POST request
-app.post("/login", (req, res) => {
-  // console.log("username:", req.body.username);
-  // set a cookie named "username" with the submitted value
-  res.cookie("username", req.body.username);
-  res.redirect("/urls");
-});
-
-
-// logout POST request
-app.post("/logout", (req, res) => {
-  // clear the "username" cookie
-  if (req.cookies["username"]) {
-    res.clearCookie("username");
-  }
-  if (req.cookies["user_id"]) {
-    res.clearCookie("user_id");
-  }
-  res.redirect("/urls");
-});
 
 
 // ----------------
@@ -257,18 +237,44 @@ app.get("/login", (req, res) => {
   res.render("user_login", templateVars);
 });
 
-// app.post("/login", (req, res) => {
+// login POST request
+app.post("/login", (req, res) => {
+  const email = req.body.email;
+  console.log(email); // DEBUGGER
+  const userExist = getUserByEmail(email);
+  if (!userExist) {
+    res.status(400).redirect("/register");
+  }
+  const userID = userExist.id;
+  res.cookie("user_id", userID); // TODO: update cookie
+  // console.log("username:", req.body.username);
+  // set a cookie named "username" with the submitted value
+  // res.cookie("username", req.body.username);
+  res.redirect("/urls");
+});
 
-// });
+
+// logout POST request
+app.post("/logout", (req, res) => {
+  // clear the "username" cookie
+  if (req.cookies["username"]) {
+    res.clearCookie("username");
+  }
+  if (req.cookies["user_id"]) {
+    res.clearCookie("user_id");
+  }
+  res.redirect("/urls");
+});
 
 
-// // add additional endpoints/paths
-// app.get("/urls.json", (req, res) => {
-//   // respond with the urlDatabase object as a JSON string
-//   res.json(urlDatabase);
-// });
 
-// app.get("/hello", (req, res) => {
+  // // add additional endpoints/paths
+  // app.get("/urls.json", (req, res) => {
+    //   // respond with the urlDatabase object as a JSON string
+    //   res.json(urlDatabase);
+    // });
+
+    // app.get("/hello", (req, res) => {
 //   // send HTML content response
 //   res.send("<html><body>Hello <b>World</b></body></html>\n");
 // });
