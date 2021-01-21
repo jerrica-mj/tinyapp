@@ -3,11 +3,14 @@
 // Create Your Web Server with Express
 
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const PORT = 8080; // default port 8080
 
 // Set up EJS as templating engine for Express
 app.set("view engine", "ejs");
+// Set up cookie-parser for use (README: https://github.com/expressjs/cookie-parser)
+app.use(cookieParser());
 
 // Object to keep track of URLs and shortened forms
 const urlDatabase = {
@@ -103,6 +106,15 @@ app.post("/urls/:shortURL", (req, res) => {
   // update existing property's value and redirect to '/urls' page
   urlDatabase[shortURL] = newLongURL;
   // redirect back to "/urls" page
+  res.redirect("/urls");
+});
+
+
+// login POST request
+app.post("/login", (req, res) => {
+  console.log("username:", req.body.username);
+  // set a cookie named "username" with the submitted value
+  res.cookie("username", req.body.username);
   res.redirect("/urls");
 });
 
