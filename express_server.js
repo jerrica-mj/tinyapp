@@ -153,7 +153,12 @@ app.post("/login", (req, res) => {
 // logout POST request
 app.post("/logout", (req, res) => {
   // clear the "username" cookie
-  res.clearCookie("username");
+  if (req.cookies["username"]) {
+    res.clearCookie("username");
+  }
+  if (req.cookies["user_id"]) {
+    res.clearCookie("user_id");
+  }
   res.redirect("/urls");
 });
 
@@ -170,7 +175,8 @@ app.get("/", (req, res) => {
 app.get("/urls", (req, res) => {
   // variables need to be sent to EJS templates inside an object
   const templateVars = {
-    username: req.cookies["username"],
+    user: users[req.cookies["user_id"]],
+    // username: req.cookies["username"],
     urls: urlDatabase
   };
   // omit "views/" in path as EJS looks there for .ejs files by convention
@@ -181,7 +187,8 @@ app.get("/urls", (req, res) => {
 // this must be before "/urls/:shortURL" handler, or express will think that "new" is a route parameter--order routes from most to least specific
 app.get("/urls/new", (req, res) => {
   const templateVars = {
-    username: req.cookies["username"]
+    user: users[req.cookies["user_id"]]
+    // , username: req.cookies["username"]
   };
   res.render("urls_new", templateVars);
 });
@@ -192,7 +199,8 @@ app.get("/urls/new", (req, res) => {
 // the : means that the id (shortURL) is a route parameter that will be available in the "req.params" object
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
-    username: req.cookies["username"],
+    user: users[req.cookies["user_id"]],
+    // username: req.cookies["username"],
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL]
   };
@@ -214,7 +222,8 @@ app.get("/u/:shortURL", (req, res) => {
 // Registration Page
 app.get("/register", (req, res) => {
   const templateVars = {
-    username: req.cookies["username"]
+    user: users[req.cookies["user_id"]]
+    // , username: req.cookies["username"]
   };
   res.render("user_register", templateVars);
 });

@@ -18,14 +18,14 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
 
-      <!-- logout form (if logged in => username defined) -->
-      <% if (username) { %>
+      <!-- logout form (if logged in => user defined/true) -->
+      <% if (user) { %>
       <form action="/logout" method="POST" class="form-inline mr-0 ml-auto align-middle">
         <div class="form-group align-middle">
-          <!-- display username (when logged in) -->
-          <label for="username" style="margin-right: 1em">Logged In As: <%= username %></label>
-          <!-- use hidden input to pass the username to the server -->
-          <input class="form-control" type="hidden" name="username" value=<%= username %>>
+          <!-- display user (when logged in) -->
+          <label for="user" style="margin-right: 1em">Logged In As: <%= user.email %></label>
+          <!-- use hidden input to pass the user to the server -->
+          <input class="form-control" type="hidden" name="user" value=<%= user %>>
           <button type="submit" class="btn btn-outline-dark">Logout</button>
         </div>
       </form>
