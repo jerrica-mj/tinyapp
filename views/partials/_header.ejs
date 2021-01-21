@@ -1,5 +1,5 @@
-<!-- Header partial template -->
-<!-- Use in templates to keep code DRY -->
+<!-- Header Partial Template -->
+<!-- Use in all page templates to keep code DRY -->
 
 
 <header>
@@ -16,31 +16,25 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+        <a class="nav-item nav-link" href="/register">Register</a>
+
+        <!-- show login link/button if not logged in (user = falsey) -->
+        <% if (!user) { %>
+        <a class="nav-item btn btn-outline-dark" href="/login">Login</a>
+
+        <% } else { %>
+          <!-- show user message and logout form (if logged in) -->
+          <form action="/logout" method="POST" class="form-inline mr-0 ml-auto align-middle">
+            <div class="form-group align-middle">
+              <!-- display user (when logged in) -->
+              <label for="user" style="margin-right: 1em">Logged In As: <%= user.email %></label>
+              <!-- use hidden input to pass the user to the server -->
+              <input class="form-control" type="hidden" name="user" value=<%= user %>>
+              <button type="submit" class="btn btn-outline-dark">Logout</button>
+            </div>
+          </form>
+        <% } %>
       </div>
-
-      <!-- logout form (if logged in => user defined/true) -->
-      <% if (user) { %>
-      <form action="/logout" method="POST" class="form-inline mr-0 ml-auto align-middle">
-        <div class="form-group align-middle">
-          <!-- display user (when logged in) -->
-          <label for="user" style="margin-right: 1em">Logged In As: <%= user.email %></label>
-          <!-- use hidden input to pass the user to the server -->
-          <input class="form-control" type="hidden" name="user" value=<%= user %>>
-          <button type="submit" class="btn btn-outline-dark">Logout</button>
-        </div>
-      </form>
-
-      <% } else { %>
-      <!-- login form (if not logged in) -->
-      <form action="/login" method="POST" class="form-inline mr-0 ml-auto align-middle">
-        <div class="form-group align-middle">
-          <!-- input tag: "name" id's data we're sending on form submission -->
-          <input class="form-control" type="text" name="username" placeholder="Username" style="width: 250px; margin: 1em">
-          <button type="submit" class="btn btn-outline-dark">Login</button>
-        </div>
-      </form>
-      <% } %>
-    </div>
 
   </nav>
 </header>
