@@ -249,6 +249,19 @@ app.post("/register", (req, res) => {
 });
 
 
+// Login Page
+app.get("/login", (req, res) => {
+  const templateVars = {
+    user: users[req.cookies["user_id"]]
+  };
+  res.render("user_login", templateVars);
+});
+
+// app.post("/login", (req, res) => {
+
+// });
+
+
 // // add additional endpoints/paths
 // app.get("/urls.json", (req, res) => {
 //   // respond with the urlDatabase object as a JSON string
