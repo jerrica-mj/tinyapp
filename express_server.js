@@ -129,9 +129,16 @@ app.get("/urls", (req, res) => {
 
 // // Delete button
 app.post("/urls/:shortURL/delete", (req, res) => {
-  console.log(`Deleted: "${req.params.shortURL}": "${urlDatabase[req.params.shortURL]}" from urlDatabase`);
-  // use "delete" to remove shortURL property from urlDatabase object
-  delete urlDatabase[req.params.shortURL];
+  const shortURL = urlDatabase[req.params.shortURL];
+  if (!shortURL) {
+    return res.sendStatus(404);
+  }
+  // only allow deletion if URL belongs to current user
+  if (shortURL.userID !== req.cookies["user_id"]) {
+    return res.sendStatus(403);
+  }
+  // "delete" shortURL object from urlDatabase
+  delete shortURL;
   // redirect back to the "/urls" page
   res.redirect("/urls");
 });
@@ -174,11 +181,15 @@ app.get("/urls/:shortURL", (req, res) => {
 // // Update shortURL's longURL Button
 app.post("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
-  const newLongURL = prependURL(req.body.longURL);
   // if shortURL doesn't exist, redirect to 'create' page
   if (!urlDatabase.hasOwnProperty(shortURL)) {
     return res.redirect('/urls/new');
   }
+  // only allow updating/editing by user the URL belongs to
+  if (req.cookies["user_id"] !== urlDatabase[shortURL].userID) {
+    return res.sendStatus(403);
+  }
+  const newLongURL = prependURL(req.body.longURL);
   // update existing shortURL's value and redirect to '/urls' page
   urlDatabase[shortURL].longURL = newLongURL;
   res.redirect("/urls");
