@@ -20,6 +20,17 @@
   <div class="card text-center">
     <div class="card-header"></div>
     <div class="card-body">
+
+      <!-- Message to show if user is not logged in -->
+      <% if (!user) { %>
+        <div class="alert alert-warning mx-auto" role="alert" style="width: 65%;">
+          <h4 class="alert-heading text-center">Uh Oh! Lost on Your Travels?</h4>
+          <p class="text-center">Looks like this URL belongs to another user, so no peeking!</p>
+          <hr>
+          <p class="text-center">Only logged in users can see their URLs. <a href="/login" class="alert-link">Click here to login</a>.</p>
+        </div>
+      <% } else { %>
+
       <!-- Print/show data received from express_server.js -->
       <h5 class="card-title">TinyURL for: <%= longURL %></h5>
       <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
@@ -42,8 +53,8 @@
           </div>
         </form>
       </div>
-
     </div>
+    <% } %>
   </div>
 
   <!-- Bootstrap JS -->
