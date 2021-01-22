@@ -170,7 +170,7 @@ app.post("/urls/:shortURL", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
     // if shortURL not in urlDatabase, redirect with 404 status code
-    res.redirect("/urls/new", 404);
+    res.redirect(404, "/urls/new");
   }
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
@@ -221,7 +221,7 @@ app.post("/login", (req, res) => {
   const password = req.body.password;
   const userExist = getUserByEmail(email);
   if (!userExist || password !== userExist.password) {
-    res.status(403);
+    res.sendStatus(403);
   }
   res.cookie("user_id", userExist.id);
   res.redirect("/urls");
