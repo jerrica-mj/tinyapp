@@ -40,7 +40,7 @@ const users = {
     id: "Un6I3mE",
     email: "user2@example.com",
     // unhashed password: "dishwasher-funk"
-    password: ""
+    password: "$2b$10$djS.6tcPydEwgnIr.n/0/.36CtgqjbVOgfPPgkHp8Scf/6r/P6bkS"
   }
 };
 
