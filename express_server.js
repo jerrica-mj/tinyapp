@@ -193,11 +193,11 @@ app.post("/register", (req, res) => {
   const userExist = getUserByEmail(email);
   if (userExist) {
     // if email already exists in users{}, send 400 (bad request)
-    res.status(400).send(`Uh oh, it looks like a user already exists with email: ${email}. Try logging in instead.`);
+    res.sendStatus(400);
   }
   const userID = "U" + generateRandomString();
   users[userID] = {
-    userID,
+    id: userID,
     email,
     password
   };
