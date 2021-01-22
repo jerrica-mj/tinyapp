@@ -146,7 +146,6 @@ app.post("/urls", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     user: users[req.cookies["user_id"]],
-    // username: req.cookies["username"],
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL]
   };
@@ -182,7 +181,6 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/register", (req, res) => {
   const templateVars = {
     user: users[req.cookies["user_id"]]
-    // , username: req.cookies["username"]
   };
   res.render("user_register", templateVars);
 });
@@ -232,10 +230,7 @@ app.post("/login", (req, res) => {
 
 // User Logout
 app.post("/logout", (req, res) => {
-  // clear the "username" cookie
-  if (req.cookies["username"]) {
-    res.clearCookie("username");
-  }
+  // clear the "user_id" cookie
   if (req.cookies["user_id"]) {
     res.clearCookie("user_id");
   }
