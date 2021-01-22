@@ -107,6 +107,15 @@ const urlsForUser = (id) => {
   }
   return result;
 };
+/**
+ * Hash a password, or other string, for secure storage.
+ * @param {string} toHash the original string to be hashed.
+ * @param {number} salt the number of salt rounds to be used in hashing, set to 10 by default.
+ * @return {string} the hashed string.
+ */
+const hashPassword = (toHash, salt = 10) => {
+  return bcrypt.hashSync(toHash, salt);
+};
 
 
 // ----------------
@@ -220,7 +229,8 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   // add new user--only forms with email and password submitted (html form input required)
   const email = req.body.email;
-  const password = req.body.password;
+  // hash user's password for secure storage
+  const password = hashPassword(req.body.password);
   const userExist = getUserByEmail(email);
   if (userExist) {
     // if email already exists in users{}, send 400 (bad request)
@@ -232,7 +242,6 @@ app.post("/register", (req, res) => {
     email,
     password
   };
-  // console.log("Added:", userID, users[userID]); // DEBUGGER
   res.cookie("user_id", userID);
   res.redirect("/urls");
 });
