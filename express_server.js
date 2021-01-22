@@ -4,7 +4,8 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const { request } = require("express");
+const bcrypt = require("bcrypt");
+// const { request } = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 
@@ -182,7 +183,7 @@ app.get("/urls/:shortURL", (req, res) => {
 app.post("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   // if shortURL doesn't exist, redirect to 'create' page
-  if (!urlDatabase.hasOwnProperty(shortURL)) {
+  if (!urlDatabase[shortURL]) {
     return res.redirect('/urls/new');
   }
   // only allow updating/editing by user the URL belongs to
