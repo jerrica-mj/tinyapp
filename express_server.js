@@ -123,7 +123,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 
-// Create New URL Form
+// Create New URL Form Page
 app.get("/urls/new", (req, res) => {
   const templateVars = {
     user: users[req.cookies["user_id"]]
@@ -133,7 +133,10 @@ app.get("/urls/new", (req, res) => {
 
 // // Add new URL (shortURL: longURL) to urlDatabase
 app.post("/urls", (req, res) => {
-  // console.log(req.body); // DEBUGGER
+  // if not signed in, redirect to login page
+  if (!req.cookies["user_id"]) {
+    return res.redirect("/login");
+  }
   const shortURL = generateRandomString();
   const longURL = prependURL(req.body.longURL);
   urlDatabase[shortURL] = longURL;
@@ -158,7 +161,7 @@ app.post("/urls/:shortURL", (req, res) => {
   const newLongURL = prependURL(req.body.longURL);
   // if shortURL doesn't exist, redirect to 'create' page
   if (!urlDatabase.hasOwnProperty(shortURL)) {
-    res.redirect('/urls/new');
+    return res.redirect('/urls/new');
   }
   // update existing shortURL's value and redirect to '/urls' page
   urlDatabase[shortURL] = newLongURL;
@@ -170,7 +173,7 @@ app.post("/urls/:shortURL", (req, res) => {
 app.get("/u/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
     // if shortURL not in urlDatabase, redirect with 404 status code
-    res.redirect(404, "/urls/new");
+    return res.redirect(404, "/urls/new");
   }
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
@@ -193,7 +196,7 @@ app.post("/register", (req, res) => {
   const userExist = getUserByEmail(email);
   if (userExist) {
     // if email already exists in users{}, send 400 (bad request)
-    res.sendStatus(400);
+    return res.sendStatus(400);
   }
   const userID = "U" + generateRandomString();
   users[userID] = {
@@ -221,7 +224,7 @@ app.post("/login", (req, res) => {
   const password = req.body.password;
   const userExist = getUserByEmail(email);
   if (!userExist || password !== userExist.password) {
-    res.sendStatus(403);
+    return res.sendStatus(403);
   }
   res.cookie("user_id", userExist.id);
   res.redirect("/urls");
