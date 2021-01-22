@@ -12,15 +12,15 @@
     </button>
 
     <!-- nav bar items -- auto-collapse on narrow screens -->
-    <div class="collapse navbar-collapse d-flex" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav d-flex">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
-        <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
-        <a class="nav-item nav-link" href="/register">Register</a>
+        <a class="mr-auto nav-item nav-link" href="/urls/new">Create New URL</a>
 
-        <!-- show login link/button if not logged in (user = falsey) -->
+        <!-- show login & register links if not logged in (user = falsey) -->
         <% if (!user) { %>
-        <a class="nav-item btn btn-outline-dark" href="/login">Login</a>
+          <a class="nav-item nav-link" href="/login">Login</a>
+          <a class="nav-item nav-link" href="/register">Register</a>
 
         <% } else { %>
           <!-- show user message and logout form (if logged in) -->
