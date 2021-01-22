@@ -28,21 +28,25 @@
           </tr>
         </thead>
         <tbody>
-          <!-- loop through urlDatabase (urls) object keys -->
-          <!-- "url" is the shortURL object and "urls[url]" is the longURL -->
+          <!-- Display all URLs for the logged in user's ID -->
+          <!-- "url" = the shortURL object & "urls[url].longURL" = the longURL -->
           <% for (let url in urls) { %>
             <tr>
-              <!-- print/show the url key value pairs, one in each column, on separate rows -->
               <td><%= url %></td>
               <td><%= urls[url].longURL %></td>
-              <!-- add an 'edit' link -->
               <td><a href="/urls/<%= url %>">Edit</a></td>
-              <!-- add a delete button -->
               <td><form method="POST" action="/urls/<%= url %>/delete"><button class="btn btn-outline-danger" type="submit">Delete</button></form></td>
             </tr>
           <% } %>
         </tbody>
       </table>
+      <!-- Message if user is not logged in -->
+      <% if (!user) { %>
+      <div class="alert alert-warning mx-auto" role="alert" style="width: 65%;">
+        <h4 class="alert-heading text-center">Uh Oh, Forget to Login?</h4>
+        <p class="text-center">Only logged in users can see their URL's. <a href="/login" class="alert-link">Click here to login</a>.</p>
+      </div>
+      <% } %>
     </main>
 
     <!-- Bootstrap JS -->
