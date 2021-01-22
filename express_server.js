@@ -269,7 +269,7 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const userExist = getUserByEmail(email);
-  if (!userExist || compareHashed(password, userExist.password)) {
+  if (!userExist || !compareHashed(password, userExist.password)) {
     return res.sendStatus(403);
   }
   res.cookie("user_id", userExist.id);
