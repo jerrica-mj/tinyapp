@@ -21,13 +21,13 @@
     <div class="card-header"></div>
     <div class="card-body">
 
-      <!-- Message to show if user is not logged in -->
-      <% if (!user) { %>
+      <!-- Show message if no user logged in or URL does not belong to current user -->
+      <% if (!user || user.id !== URL.userID) { %>
         <div class="alert alert-warning mx-auto" role="alert" style="width: 65%;">
           <h4 class="alert-heading text-center">Uh Oh! Lost on Your Travels?</h4>
           <p class="text-center">Looks like this URL belongs to another user, so no peeking!</p>
           <hr>
-          <p class="text-center">Only logged in users can see their URLs. <a href="/login" class="alert-link">Click here to login</a>.</p>
+          <p class="text-center font-weight-light">Only logged in users can see their URLs. <a href="/login" class="alert-link font-weight-normal">Click here to login</a>.</p>
         </div>
       <% } else { %>
 
