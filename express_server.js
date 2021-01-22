@@ -90,12 +90,13 @@ const prependURL = (url) => {
 /**
  * Looks up a registered user by their email. Returns the user object, or false if not found.
  * @param {string} queryEmail the email string for searching all registered users.
+ * @param {object} database the database object to search for a corresponding user.
  * @return {} identified user object, or false if not found.
  */
-const getUserByEmail = (queryEmail) => {
-  for (const userID in users) {
-    if (users[userID].email === queryEmail) {
-      return users[userID];
+const getUserByEmail = (queryEmail, database) => {
+  for (const userID in database) {
+    if (database[userID].email === queryEmail) {
+      return database[userID];
     }
   }
   return false;
@@ -250,7 +251,7 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   // hash user's password for secure storage
   const password = hashPassword(req.body.password);
-  const userExist = getUserByEmail(email);
+  const userExist = getUserByEmail(email, users);
   if (userExist) {
     // if email already exists in users{}, send 400 (bad request)
     return res.sendStatus(400);
@@ -278,7 +279,7 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const userExist = getUserByEmail(email);
+  const userExist = getUserByEmail(email, users);
   if (!userExist || !compareHashed(password, userExist.password)) {
     return res.sendStatus(403);
   }
