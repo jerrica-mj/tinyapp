@@ -53,11 +53,11 @@ const users = {
 // FUNCTION(S)
 // ------------------------------------------------------------
 /**
- * Generates a string of 6 random alphanumeric characters, of mixed case.
- * @return {string} a string of 6 random alphanumeric characters, of mixed case.
+ * Generates a string of random alphanumeric characters, of mixed case.
+ * @param {number} length the number of characters to generate for the resulting string, set to 6 by defaul.
+ * @return {string} a string of random alphanumeric characters, of mixed case.
  */
-const generateRandomString = () => {
-  const length = 6;
+const generateRandomString = (length = 6) => {
   // generate random alphanumeric string with toString(36), removing "0."
   let chars = Math.random().toString(36).substr(2, length);
   let result = chars.split("");
