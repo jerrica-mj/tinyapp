@@ -1,26 +1,32 @@
 // TINYAPP & EXPRESS SETUP ASSIGNMENT
 
-// Create Your Web Server with Express
-
+// Create Web Server with Express and Select Middleware
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const { request } = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 
-// Set up EJS as templating engine for Express
 app.set("view engine", "ejs");
-// Set up cookie-parser for use (README: https://github.com/expressjs/cookie-parser)
 app.use(cookieParser());
+// use body-parser to convert POST request bodies to readable string, added to the request object under the key "body"
+app.use(bodyParser.urlencoded({extended: true}));
 
-//
+
+// ----------------
 // DATA STORES
-//
-// Object to keep track of URLs and shortened forms
+// ----------------
+/**
+ * Object to keep track of short- and longURLs
+ */
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
-// App Users (registered)
+/**
+ * Object to keep track of registered app users
+ */
 const users = {
   "userRandomID": {
     id: "userRandomID",
@@ -36,11 +42,11 @@ const users = {
 
 
 // ----------------
-
 // FUNCTION(S)
+// ----------------
 /**
- * returns a string of 6 random alphanumeric characters
- * *TEMP* used to simulate generating a "unique" shortURL
+ * Generates a string of 6 random alphanumeric characters, of mixed case.
+ * @return {string} a string of 6 random alphanumeric characters, of mixed case.
  */
 const generateRandomString = () => {
   const length = 6;
@@ -55,8 +61,11 @@ const generateRandomString = () => {
   }
   return result.join("");
 };
-
-// function to ensure all longURLs start with "http://www."
+/**
+ *  Prepends a URL with "http://www." as needed. If the URL already starts with "http://www.", returns the URL as recieved.
+ * @param {string} url the URL to be prepended as needed.
+ * @return {string} the URL, prepended with "http://www.".
+ */
 const prependURL = (url) => {
   let longURL = url.split(".");
   if (longURL[0] !== "http://www" || longURL[0] !== "https://www") {
@@ -72,9 +81,9 @@ const prependURL = (url) => {
 };
 
 /**
- * Function to lookup a user by their email
- * Input: user email to lookup
- * Return: user object, or false if not found
+ * Looks up a registered user by their email. Returns the user object, or false if not found.
+ * @param {string} queryEmail the email string for searching all registered users.
+ * @return {} identified user object, or false if not found.
  */
 const getUserByEmail = (queryEmail) => {
   for (const userID in users) {
@@ -86,36 +95,25 @@ const getUserByEmail = (queryEmail) => {
 };
 
 
-// ------------------------------------------------------------------
-
-
-// ENDPOINT/PATH HANDLING
-
 // ----------------
-// POST REQUESTS
-
-// require middleware to parse POST request body (buffer) to be readable
-// must come before all route handling, so body-parser library can convert the request body from "Buffer" to readable string, then add the data to the req(request) object under the key "body"
-const bodyParser = require("body-parser");
-const { request } = require("express");
-app.use(bodyParser.urlencoded({extended: true}));
-
-// Handle POST request for "urls_new" form
-// should this go before or after the get request route handlers?
-app.post("/urls", (req, res) => {
-  // log the POST request body (parsed to JS object) to the console
-  console.log(req.body);
-  const shortURL = generateRandomString();
-  // check that longURLs are prepended with "http(s)://www."
-  const longURL = prependURL(req.body.longURL);
-  // save shortURL-longURL key-value pair to urlDatabase
-  urlDatabase[shortURL] = longURL;
-  // redirect client to a new page showing their long & shortURL
-  res.redirect(`/urls/${shortURL}`);
+// ENDPOINTS / ROUTE HANDLING
+// ----------------
+// Root Path "/"
+app.get("/", (req, res) => {
+  res.redirect("/urls");
 });
 
 
-// handle requests from delete buttons on "/urls" page
+// My URLs Index Page
+app.get("/urls", (req, res) => {
+  const templateVars = {
+    user: users[req.cookies["user_id"]],
+    urls: urlDatabase
+  };
+  res.render("urls_index", templateVars);
+});
+
+// // Delete button
 app.post("/urls/:shortURL/delete", (req, res) => {
   console.log(`Deleted: "${req.params.shortURL}": "${urlDatabase[req.params.shortURL]}" from urlDatabase`);
   // use "delete" to remove shortURL property from urlDatabase object
@@ -125,58 +123,26 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 
-// handle requests from update buttons
-app.post("/urls/:shortURL", (req, res) => {
-  const shortURL = req.params.shortURL;
-  const newLongURL = prependURL(req.body.longURL);
-  // console.log(`Updated '${shortURL}' to redirect to '${newLongURL}' instead of '${urlDatabase[shortURL]}'`);
-  // if property doesn't exist, redirect to 'create' page
-  if (!urlDatabase.hasOwnProperty(shortURL)) {
-    res.redirect('/urls/new');
-  }
-  // update existing property's value and redirect to '/urls' page
-  urlDatabase[shortURL] = newLongURL;
-  // redirect back to "/urls" page
-  res.redirect("/urls");
-});
-
-
-
-
-// ----------------
-// GET REQUESTS
-
-// handler for the root path, "/"
-app.get("/", (req, res) => {
-  res.send("Hello!");
-});
-
-// Pass urlDatabase object to "views/urls_index.ejs"
-app.get("/urls", (req, res) => {
-  // variables need to be sent to EJS templates inside an object
-  const templateVars = {
-    user: users[req.cookies["user_id"]],
-    // username: req.cookies["username"],
-    urls: urlDatabase
-  };
-  // omit "views/" in path as EJS looks there for .ejs files by convention
-  res.render("urls_index", templateVars);
-});
-
-// Handle GET (render) route for "urls_new" form
-// this must be before "/urls/:shortURL" handler, or express will think that "new" is a route parameter--order routes from most to least specific
+// Create New URL Form
 app.get("/urls/new", (req, res) => {
   const templateVars = {
     user: users[req.cookies["user_id"]]
-    // , username: req.cookies["username"]
   };
   res.render("urls_new", templateVars);
 });
 
+// // Add new URL (shortURL: longURL) to urlDatabase
+app.post("/urls", (req, res) => {
+  // console.log(req.body); // DEBUGGER
+  const shortURL = generateRandomString();
+  const longURL = prependURL(req.body.longURL);
+  urlDatabase[shortURL] = longURL;
+  res.redirect(`/urls/${shortURL}`);
+});
 
 
-// Pass urlDatabase to "views/urls_show.ejs"
-// the : means that the id (shortURL) is a route parameter that will be available in the "req.params" object
+// Short URL's Page
+// :shortURL => a route param (req.params.shortURL)
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = {
     user: users[req.cookies["user_id"]],
@@ -187,12 +153,25 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+// // Update shortURL's longURL Button
+app.post("/urls/:shortURL", (req, res) => {
+  const shortURL = req.params.shortURL;
+  const newLongURL = prependURL(req.body.longURL);
+  // if shortURL doesn't exist, redirect to 'create' page
+  if (!urlDatabase.hasOwnProperty(shortURL)) {
+    res.redirect('/urls/new');
+  }
+  // update existing shortURL's value and redirect to '/urls' page
+  urlDatabase[shortURL] = newLongURL;
+  res.redirect("/urls");
+});
 
-// handle shortURL redirect to longURL
+
+// Redirect shortURL to its longURL
 app.get("/u/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
-    // if shortURL-longURL is not in the database, redirect to "create" page--attempt to deal with edge case, but could use 404?
-    res.redirect("/urls/new");
+    // if shortURL not in urlDatabase, redirect with 404 status code
+    res.redirect("/urls/new", 404);
   }
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
@@ -208,6 +187,7 @@ app.get("/register", (req, res) => {
   res.render("user_register", templateVars);
 });
 
+// // Register New User
 app.post("/register", (req, res) => {
   // add new user--only forms with email and password submitted (html form input required)
   const email = req.body.email;
@@ -229,7 +209,7 @@ app.post("/register", (req, res) => {
 });
 
 
-// Login Page
+// Login Form Page
 app.get("/login", (req, res) => {
   const templateVars = {
     user: users[req.cookies["user_id"]]
@@ -237,24 +217,21 @@ app.get("/login", (req, res) => {
   res.render("user_login", templateVars);
 });
 
-// login POST request
+// // User Login
 app.post("/login", (req, res) => {
   const email = req.body.email;
-  console.log(email); // DEBUGGER
   const userExist = getUserByEmail(email);
   if (!userExist) {
     res.status(400).redirect("/register");
   }
   const userID = userExist.id;
-  res.cookie("user_id", userID); // TODO: update cookie
-  // console.log("username:", req.body.username);
-  // set a cookie named "username" with the submitted value
-  // res.cookie("username", req.body.username);
+  // set cookie for user message in header
+  res.cookie("user_id", userID);
   res.redirect("/urls");
 });
 
 
-// logout POST request
+// User Logout
 app.post("/logout", (req, res) => {
   // clear the "username" cookie
   if (req.cookies["username"]) {
@@ -267,34 +244,9 @@ app.post("/logout", (req, res) => {
 });
 
 
-
-  // // add additional endpoints/paths
-  // app.get("/urls.json", (req, res) => {
-    //   // respond with the urlDatabase object as a JSON string
-    //   res.json(urlDatabase);
-    // });
-
-    // app.get("/hello", (req, res) => {
-//   // send HTML content response
-//   res.send("<html><body>Hello <b>World</b></body></html>\n");
-// });
-
-// see if a variable created in one request is accessible in another
-// they are not accessible in other request scopes, and will cause a reference error at that endpoint/url if the endpoint calls a value out of scope
-// app.get("/set", (req, res) => {
-//   const a = 1;
-//   res.send(`a = ${a}`);
-// });
-
-// app.get("/fetch", (req, res) => {
-//   res.send(`a = ${a}`);
-// });
-
-
-// ------------------------------------------------------------------
-
-
+// ----------------
 // LISTEN ON PORT
+// ----------------
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
