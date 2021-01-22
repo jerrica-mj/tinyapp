@@ -220,13 +220,12 @@ app.get("/login", (req, res) => {
 // // User Login
 app.post("/login", (req, res) => {
   const email = req.body.email;
+  const password = req.body.password;
   const userExist = getUserByEmail(email);
-  if (!userExist) {
-    res.status(400).redirect("/register");
+  if (!userExist || password !== userExist.password) {
+    res.status(403);
   }
-  const userID = userExist.id;
-  // set cookie for user message in header
-  res.cookie("user_id", userID);
+  res.cookie("user_id", userExist.id);
   res.redirect("/urls");
 });
 
