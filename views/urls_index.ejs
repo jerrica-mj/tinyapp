@@ -29,12 +29,12 @@
         </thead>
         <tbody>
           <!-- loop through urlDatabase (urls) object keys -->
-          <!-- "url" is the shortURL and "urls[url]" is the longURL -->
+          <!-- "url" is the shortURL object and "urls[url]" is the longURL -->
           <% for (let url in urls) { %>
             <tr>
               <!-- print/show the url key value pairs, one in each column, on separate rows -->
               <td><%= url %></td>
-              <td><%= urls[url] %></td>
+              <td><%= urls[url].longURL %></td>
               <!-- add an 'edit' link -->
               <td><a href="/urls/<%= url %>">Edit</a></td>
               <!-- add a delete button -->
