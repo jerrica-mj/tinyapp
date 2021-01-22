@@ -2,23 +2,20 @@
 
 // Create Web Server with Express and Select Middleware
 const express = require("express");
-// const cookieParser = require("cookie-parser"); // REPLACING
 const cookieSession = require("cookie-session");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
-// const { request } = require("express");
 const app = express();
 const PORT = 8080; // default port 8080
 
 app.set("view engine", "ejs");
-// app.use(cookieParser()); // REPLACING
 app.use(cookieSession({
   name: 'session',
   keys: ["user_id"],
 
   // Cookie Options
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
+}));
 // use body-parser to convert POST request bodies to readable string, added to the request object under the key "body"
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -149,7 +146,6 @@ app.get("/", (req, res) => {
 // My URLs Index Page
 app.get("/urls", (req, res) => {
   const templateVars = {
-    // user: users[req.cookies["user_id"]], // REPLACING
     user: users[req.session.user_id],
     // pass only the urls for the current user
     urls: urlsForUser(req.session.user_id)
@@ -265,7 +261,6 @@ app.post("/register", (req, res) => {
     email,
     password
   };
-  // res.cookie("user_id", userID); // REPLACING
   req.session.user_id = userID;
   res.redirect("/urls");
 });
@@ -287,7 +282,6 @@ app.post("/login", (req, res) => {
   if (!userExist || !compareHashed(password, userExist.password)) {
     return res.sendStatus(403);
   }
-  // res.cookie("user_id", userExist.id);
   req.session.user_id = userExist.id;
   res.redirect("/urls");
 });
@@ -295,9 +289,8 @@ app.post("/login", (req, res) => {
 
 // User Logout
 app.post("/logout", (req, res) => {
-  // clear the "user_id" cookie
+  // destroy the session to remove the cookie
   if (req.session.user_id) {
-    // res.clearCookie("user_id"); // REPLACING?
     req.session = null;
   }
   res.redirect("/urls");
