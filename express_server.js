@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({extended: true}));
  */
 const urlDatabase = {
   "b2xVn2": {longURL: "http://www.lighthouselabs.ca", userID: "UaJ48lW"},
-  "9sm5xK": {longURL: "http://www.google.com", userID: "UaJ48lW"}
+  "9sm5xK": {longURL: "http://www.google.com", userID: "Un6I3mE"}
 };
 /**
  * Object to keep track of registered app users
@@ -79,7 +79,6 @@ const prependURL = (url) => {
   }
   return longURL.join(".");
 };
-
 /**
  * Looks up a registered user by their email. Returns the user object, or false if not found.
  * @param {string} queryEmail the email string for searching all registered users.
@@ -92,6 +91,20 @@ const getUserByEmail = (queryEmail) => {
     }
   }
   return false;
+};
+/**
+ * Filters all URLs in urlDatabase to those where the userID is equal to the id of the currently logged-in user.
+ * @param {string} id the id of the currently logged-in user.
+ * @return {Object} all URLs from the urlDatabase where the userID matches the id parameter.
+ */
+const urlsForUser = (id) => {
+  let result = {};
+  for (let url in urlDatabase) {
+    if (urlDatabase[url].userID === id) {
+      result[url] = urlDatabase[url];
+    }
+  }
+  return result;
 };
 
 
@@ -108,7 +121,8 @@ app.get("/", (req, res) => {
 app.get("/urls", (req, res) => {
   const templateVars = {
     user: users[req.cookies["user_id"]],
-    urls: urlDatabase
+    // pass only the urls for the current user
+    urls: urlsForUser(req.cookies["user_id"])
   };
   res.render("urls_index", templateVars);
 });
