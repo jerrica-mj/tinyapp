@@ -130,7 +130,7 @@ const hashPassword = (toHash, salt = 10) => {
  * @param {string} hashed the hashed string against which to compare the unhashed string.
  * @return {boolean} true if unhashed matches its hashed counterpart, false if they do not match.
  */
-const compareHashed = (unhashed, hashed) => {
+const compareToHashed = (unhashed, hashed) => {
   return bcrypt.compareSync(unhashed, hashed);
 };
 
@@ -280,7 +280,7 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const userExist = getUserByEmail(email, users);
-  if (!userExist || !compareHashed(password, userExist.password)) {
+  if (!userExist || !compareToHashed(password, userExist.password)) {
     return res.sendStatus(403);
   }
   req.session.user_id = userExist.id;
