@@ -31,6 +31,7 @@
           <!-- loop through urlDatabase (urls) object keys -->
           <!-- "url" is the shortURL object and "urls[url]" is the longURL -->
           <% for (let url in urls) { %>
+            <% if (user.id === urls[url].userID) { %>
             <tr>
               <!-- print/show the url key value pairs, one in each column, on separate rows -->
               <td><%= url %></td>
@@ -40,7 +41,7 @@
               <!-- add a delete button -->
               <td><form method="POST" action="/urls/<%= url %>/delete"><button class="btn btn-outline-danger" type="submit">Delete</button></form></td>
             </tr>
-          <% } %>
+          <% } } %>
         </tbody>
       </table>
     </main>
