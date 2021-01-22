@@ -3,6 +3,7 @@
 // Create Web Server with Express and Select Middleware
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 // const { request } = require("express");
@@ -32,12 +33,14 @@ const users = {
   "UaJ48lW": {
     id: "UaJ48lW",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+    // unhashed password: "purple-monkey-dinosaur"
+    password: "$2b$10$dWtNrbMmbqT.N2G/.r8Uz.c2a8BztISHUsRoQowCAoK7ovd8Sl8gG"
   },
   "Un6I3mE": {
     id: "Un6I3mE",
     email: "user2@example.com",
-    password: "dishwasher-funk"
+    // unhashed password: "dishwasher-funk"
+    password: ""
   }
 };
 
@@ -116,6 +119,7 @@ const urlsForUser = (id) => {
 const hashPassword = (toHash, salt = 10) => {
   return bcrypt.hashSync(toHash, salt);
 };
+console.log(hashPassword("dishwasher-funk"));
 /**
  * Compare an unhashed and hashed string for a match, using bcrypt, which must have been used to hash the hashed string.
  * @param {string} unhashed the unhashed string to be checked.
