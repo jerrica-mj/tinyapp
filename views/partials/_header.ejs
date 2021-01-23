@@ -6,12 +6,12 @@
   <nav class="navbar navbar-expand-md navbar-dark bg-success">
     <a class="navbar-brand" href="/urls">TinyApp</a>
 
-    <!-- button to show collapsed nav menu on narrow screens -->
+    <!-- button: toggle nav items' collapse on narrow screens -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- nav bar items -- auto-collapse on narrow screens -->
+    <!-- nav bar items--collapsed by default on narrow screens -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav d-flex">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
@@ -23,12 +23,12 @@
           <a class="nav-item nav-link" href="/register">Register</a>
 
         <% } else { %>
-          <!-- show user message and logout form (if logged in) -->
+          <!-- show message and logout button if logged in -->
           <form action="/logout" method="POST" class="form-inline mr-0 ml-auto align-middle">
             <div class="form-group align-middle">
-              <!-- display user (when logged in) -->
+              <!-- display message with user email -->
               <label for="user" style="margin-right: 1em">Logged In As: <%= user.email %></label>
-              <!-- use hidden input to pass the user to the server -->
+              <!-- use hidden input to pass user value to the endpoint -->
               <input class="form-control" type="hidden" name="user" value=<%= user %>>
               <button type="submit" class="btn btn-outline-dark">Logout</button>
             </div>
