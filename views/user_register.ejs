@@ -13,24 +13,21 @@
 </head>
 
 <body>
-  <!-- add partial template for header -->
   <%- include("partials/_header") %>
 
   <main style="margin: 1em;">
     <h3>Register for an Account</h3>
 
-    <!-- form tag: "action" says to which URL to submit the form, "method" tells which HTTP method to use when submitting -->
+    <!-- Form to register a new user -->
     <form action="/register" method="POST" class="pt-3">
-      <!-- email (required) -->
+      <!-- email input field (required) -->
       <div class="form-group row">
         <label for="email" class="col-sm-1 mr-4 col-form-label">Email:</label>
         <div class="col-sm-5">
-          <!-- input tag: "name" id's data we're sending on form submission -->
           <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
-          <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
         </div>
       </div>
-      <!-- password (required) -->
+      <!-- password  input field (required) -->
       <div class="form-group row">
         <label for="password" class="col-sm-1 mr-4 col-form-label">Password:</label>
         <div class="col-sm-5">
