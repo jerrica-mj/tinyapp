@@ -6,32 +6,33 @@
   <nav class="navbar navbar-expand-md navbar-dark bg-success">
     <a class="navbar-brand" href="/urls">TinyApp</a>
 
-    <!-- button: toggle nav items' collapse on narrow screens -->
+    <!-- Button: toggle nav items' collapse on narrow screens -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- nav bar items--collapsed by default on narrow screens -->
+    <!-- Nav bar items--collapsed by default on narrow screens -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav d-flex">
+      <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
-        <a class="mr-auto nav-item nav-link" href="/urls/new">Create New URL</a>
+        <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+      </div>
 
-        <!-- show login & register links if not logged in (user = falsey) -->
+      <!-- Some nav bar items aligned to the right -->
+      <div class="navbar-nav ml-auto">
+        <!-- Show login & register links if not logged in (user = falsey) -->
         <% if (!user) { %>
           <a class="nav-item nav-link" href="/login">Login</a>
           <a class="nav-item nav-link" href="/register">Register</a>
 
         <% } else { %>
-          <!-- show message and logout button if logged in -->
-          <form action="/logout" method="POST" class="form-inline mr-0 ml-auto align-middle">
-            <div class="form-group align-middle">
-              <!-- display message with user email -->
-              <label for="user" style="margin-right: 1em">Logged In As: <%= user.email %></label>
-              <!-- use hidden input to pass user value to the endpoint -->
-              <input class="form-control" type="hidden" name="user" value=<%= user %>>
-              <button type="submit" class="btn btn-outline-dark">Logout</button>
-            </div>
+          <!-- Show message and logout button if logged in -->
+          <form action="/logout" method="POST" class="form-inline">
+            <!-- Display message with user email -->
+            <label for="user" class="mr-3">Logged In As: <%= user.email %></label>
+            <!-- Hidden input to pass user value to the endpoint -->
+            <input class="form-control" type="hidden" name="user" value=<%= user %>>
+            <button type="submit" class="btn btn-outline-dark">Logout</button>
           </form>
         <% } %>
       </div>
