@@ -13,7 +13,6 @@
     <title>TinyApp</title>
   </head>
   <body>
-    <!-- add partial template for header -->
     <%- include("partials/_header") %>
 
     <main style="margin: 1em;">
@@ -23,19 +22,21 @@
           <tr>
             <th scope="col">Short URL</th>
             <th scope="col">Long URL</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col" class="text-center">Edit</th>
+            <th scope="col" class="text-center">Delete</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Display all URLs for the logged in user's ID -->
+          <!-- Display all URLs for the logged in user's account/ID -->
           <!-- "url" = the shortURL object & "urls[url].longURL" = the longURL -->
           <% for (let url in urls) { %>
             <tr>
               <td><%= url %></td>
               <td><%= urls[url].longURL %></td>
-              <td><a href="/urls/<%= url %>">Edit</a></td>
-              <td><form method="POST" action="/urls/<%= url %>/delete"><button class="btn btn-outline-danger" type="submit">Delete</button></form></td>
+              <!-- Edit button -->
+              <td class="text-center"><form method="GET" action="/urls/<%= url %>"><button class="btn btn-outline-primary" type="submit">Edit</button></form></td>
+              <!-- Delete button -->
+              <td class="text-center"><form method="POST" action="/urls/<%= url %>/delete"><button class="btn btn-outline-danger" type="submit">Delete</button></form></td>
             </tr>
           <% } %>
         </tbody>
