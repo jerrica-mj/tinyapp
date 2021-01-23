@@ -8,11 +8,11 @@ TinyApp lets users register with an email to:
 - Delete any of their shortened URLs.
 
 ## Final Product
-!["screenshot of URLs page for a logged in user"](#)
-!["screenshot of URLs page when no user is logged in"](#)
-!["screenshot of a shortened URL's page when its user is logged in"](#)
-!["screenshot of a shortened URL's page when no user or a user other than its creator is logged in"](#)
-!["screenshot of registration page"](#)
+!["screenshot of URLs page for a logged in user"](https://github.com/jerrica-mj/tinyapp/blob/master/docs/urls_page2.png)
+!["screenshot of URLs page when no user is logged in"](https://github.com/jerrica-mj/tinyapp/blob/master/docs/urls_page1.png)
+!["screenshot of a shortened URL's page when its user is logged in"](https://github.com/jerrica-mj/tinyapp/blob/master/docs/short_url_details_page2.png)
+!["screenshot of a shortened URL's page when when its user is NOT logged in"](https://github.com/jerrica-mj/tinyapp/blob/master/docs/short_url_details_page1.png)
+!["screenshot of login page"](https://github.com/jerrica-mj/tinyapp/blob/master/docs/login_page.png)
 
 ## Dependencies
 - Node.js
