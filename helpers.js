@@ -57,7 +57,7 @@ const getUserByEmail = (queryEmail, database) => {
       return database[userID];
     }
   }
-  return false;
+  return undefined;
 };
 /**
  * Filters all URLs in a database to those where the associated user ID matches that of the currently logged-in user.
