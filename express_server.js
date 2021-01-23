@@ -197,6 +197,10 @@ app.get("/login", (req, res) => {
   const templateVars = {
     user: users[req.session.user_id]
   };
+  // redirect logged in user to /urls
+  if (req.session.user_id) {
+    return res.redirect("/urls");
+  }
   res.render("user_login", templateVars);
 });
 
