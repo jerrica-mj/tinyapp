@@ -55,7 +55,7 @@ const users = {
 // ------------------------------------------------------------
 // GET / (ROOT)
 app.get("/", (req, res) => {
-  // redirect to /urls if logged in, else to /login
+  // redirect to /urls (if logged in) or to /login
   if (req.session.user_id) {
     return res.redirect("/urls");
   }
@@ -63,7 +63,7 @@ app.get("/", (req, res) => {
 });
 
 
-// My URLs Index Page
+// MY URLS PAGE
 app.get("/urls", (req, res) => {
   const templateVars = {
     user: users[req.session.user_id],
@@ -73,24 +73,23 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-// // Delete button
+
+// DELETE A SHORT URL FROM DATABASE
 app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = urlDatabase[req.params.shortURL];
+  // non-200 response if URL not in database, or logged in user is not owner
   if (!shortURL) {
     return res.sendStatus(404);
   }
-  // only allow deletion if URL belongs to current user
   if (shortURL.userID !== req.session.user_id) {
     return res.sendStatus(403);
   }
-  // "delete" shortURL property from urlDatabase
   delete urlDatabase[req.params.shortURL];
-  // redirect back to the "/urls" page
   res.redirect("/urls");
 });
 
 
-// Create New URL Form Page
+// CREATE NEW URL PAGE
 app.get("/urls/new", (req, res) => {
   const templateVars = {
     user: users[req.session.user_id]
@@ -98,7 +97,8 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
-// // Add new URL (shortURL: longURL) to urlDatabase
+
+// CREATE / ADD NEW SHORT URL TO DATABASE
 app.post("/urls", (req, res) => {
   // if not signed in, redirect to login page
   if (!req.session.user_id) {
@@ -112,7 +112,7 @@ app.post("/urls", (req, res) => {
 });
 
 
-// Short URL's Page
+// SHORT URL'S DETAILS PAGE
 // :shortURL => a route param (req.params.shortURL)
 app.get("/urls/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
@@ -127,7 +127,8 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-// // Update shortURL's longURL Button
+
+// UPDATE SHORT URL'S LONG URL
 app.post("/urls/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
   // if shortURL doesn't exist, redirect to 'create' page
@@ -145,7 +146,7 @@ app.post("/urls/:shortURL", (req, res) => {
 });
 
 
-// Redirect shortURL to its longURL
+// REDIRECT SHORT URL TO LONG URL
 app.get("/u/:shortURL", (req, res) => {
   if (!urlDatabase[req.params.shortURL]) {
     // if shortURL not in urlDatabase, redirect with 404 status code
@@ -156,7 +157,7 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 
-// Registration Page
+// USER REGISTRATION PAGE
 app.get("/register", (req, res) => {
   const templateVars = {
     user: users[req.session.user_id]
@@ -164,11 +165,12 @@ app.get("/register", (req, res) => {
   res.render("user_register", templateVars);
 });
 
-// // Register New User
+
+// REGISTER NEW USER
 app.post("/register", (req, res) => {
-  // add new user--only forms with email and password submitted (html form input required)
+  // add new user--email and password fields required in HTML form
   const email = req.body.email;
-  // hash user's password for secure storage
+  // hash password for secure storage
   const password = hashPassword(req.body.password);
   const userExist = getUserByEmail(email, users);
   if (userExist) {
@@ -186,7 +188,7 @@ app.post("/register", (req, res) => {
 });
 
 
-// Login Form Page
+// USER LOGIN PAGE
 app.get("/login", (req, res) => {
   const templateVars = {
     user: users[req.session.user_id]
@@ -194,10 +196,12 @@ app.get("/login", (req, res) => {
   res.render("user_login", templateVars);
 });
 
-// // User Login
+
+// LOGIN USER
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  // verify registered user, and correct password
   const userExist = getUserByEmail(email, users);
   if (!userExist || !compareToHashed(password, userExist.password)) {
     return res.sendStatus(403);
@@ -207,7 +211,7 @@ app.post("/login", (req, res) => {
 });
 
 
-// User Logout
+// LOGOUT USER
 app.post("/logout", (req, res) => {
   // destroy the session to remove the cookie
   if (req.session.user_id) {
