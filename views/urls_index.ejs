@@ -41,11 +41,17 @@
           <% } %>
         </tbody>
       </table>
+
+      <!-- Link to create a new shortURL--only for logged in users-->
+      <% if (user) { %>
+      <div class="mx-auto my-3 text-center"><a href="/urls/new" class="btn btn-outline-success">Create a New Short URL</a></div>
+
       <!-- Message if user is not logged in -->
-      <% if (!user) { %>
-      <div class="alert alert-warning mx-auto" role="alert" style="width: 65%;">
-        <h4 class="alert-heading text-center">Uh Oh, Forget to Login?</h4>
-        <p class="text-center">Only logged in users can see their URLs. <a href="/login" class="alert-link">Click here to login</a>.</p>
+      <% } else { %>
+      <div class="alert alert-warning mx-auto w-50" role="alert">
+        <h4 class="alert-heading text-center mb-4 mt-3">Uh Oh, Forget to Login?</h4>
+        <p class="text-center">Only logged in users can see their URLs.<br>
+        <a href="/login" class="alert-link">Click here to login</a>.</p>
       </div>
       <% } %>
     </main>
