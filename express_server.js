@@ -163,6 +163,10 @@ app.get("/u/:shortURL", (req, res) => {
 
 // USER REGISTRATION PAGE
 app.get("/register", (req, res) => {
+  // redirect logged in user to /urls
+  if (req.session.user_id) {
+    return res.redirect("/urls");
+  }
   const templateVars = {
     user: users[req.session.user_id]
   };
