@@ -14,7 +14,6 @@
 
 
 <body>
-  <!-- add partial template for header -->
   <%- include("partials/_header") %>
 
   <main style="margin: 1em;">
@@ -22,14 +21,14 @@
 
     <!-- Login Form -->
     <form action="/login" method="POST" class="pt-3">
-      <!-- email (required) -->
+      <!-- email input field (required) -->
       <div class="form-group row">
         <label for="email" class="col-sm-1 mr-4 col-form-label">Email:</label>
         <div class="col-sm-5">
           <input type="email" class="form-control" id="email" name="email" placeholder="Enter Your Email" required>
         </div>
       </div>
-      <!-- password (required) -->
+      <!-- password input field (required) -->
       <div class="form-group row">
         <label for="password" class="col-sm-1 mr-4 col-form-label">Password:</label>
         <div class="col-sm-5">
