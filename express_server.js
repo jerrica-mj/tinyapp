@@ -176,13 +176,14 @@ app.get("/register", (req, res) => {
 
 // REGISTER NEW USER
 app.post("/register", (req, res) => {
-  // add new user--email and password fields required in HTML form
+  // if email or password are empty, or if user already exists, send 400 status code
+  if (!req.body.email || !req.body.password) {
+    return res.sendStatus(400);
+  }
   const email = req.body.email;
-  // hash password for secure storage
   const password = hashPassword(req.body.password);
   const userExist = getUserByEmail(email, users);
   if (userExist) {
-    // if email already exists in users{}, send 400 (bad request)
     return res.sendStatus(400);
   }
   const userID = "U" + generateRandomString();
