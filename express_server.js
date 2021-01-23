@@ -74,18 +74,17 @@ app.get("/urls", (req, res) => {
 });
 
 
-// DELETE A SHORT URL FROM DATABASE
-app.post("/urls/:shortURL/delete", (req, res) => {
-  const shortURL = urlDatabase[req.params.shortURL];
-  // non-200 response if URL not in database, or logged in user is not owner
-  if (!shortURL) {
-    return res.sendStatus(404);
+// CREATE / ADD NEW SHORT URL TO DATABASE
+app.post("/urls", (req, res) => {
+  // if not signed in, redirect to login page
+  if (!req.session.user_id) {
+    return res.redirect("/login");
   }
-  if (shortURL.userID !== req.session.user_id) {
-    return res.sendStatus(403);
-  }
-  delete urlDatabase[req.params.shortURL];
-  res.redirect("/urls");
+  const shortURL = generateRandomString();
+  const longURL = prependURL(req.body.longURL);
+  const userID = req.session.user_id;
+  urlDatabase[shortURL] = {longURL, userID};
+  res.redirect(`/urls/${shortURL}`);
 });
 
 
@@ -99,20 +98,6 @@ app.get("/urls/new", (req, res) => {
     return res.redirect("/login");
   }
   res.render("urls_new", templateVars);
-});
-
-
-// CREATE / ADD NEW SHORT URL TO DATABASE
-app.post("/urls", (req, res) => {
-  // if not signed in, redirect to login page
-  if (!req.session.user_id) {
-    return res.redirect("/login");
-  }
-  const shortURL = generateRandomString();
-  const longURL = prependURL(req.body.longURL);
-  const userID = req.session.user_id;
-  urlDatabase[shortURL] = {longURL, userID};
-  res.redirect(`/urls/${shortURL}`);
 });
 
 
@@ -146,6 +131,21 @@ app.post("/urls/:shortURL", (req, res) => {
   const newLongURL = prependURL(req.body.longURL);
   // update existing shortURL's value and redirect to '/urls' page
   urlDatabase[shortURL].longURL = newLongURL;
+  res.redirect("/urls");
+});
+
+
+// DELETE A SHORT URL FROM DATABASE
+app.post("/urls/:shortURL/delete", (req, res) => {
+  const shortURL = urlDatabase[req.params.shortURL];
+  // non-200 response if URL not in database, or logged in user is not owner
+  if (!shortURL) {
+    return res.sendStatus(404);
+  }
+  if (shortURL.userID !== req.session.user_id) {
+    return res.sendStatus(403);
+  }
+  delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
 });
 
