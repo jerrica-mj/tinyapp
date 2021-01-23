@@ -34,7 +34,7 @@ const generateRandomString = (length = 6) => {
  */
 const prependURL = (url) => {
   let longURL = url.split(".");
-  if (longURL[0] !== "http://www" || longURL[0] !== "https://www") {
+  if (longURL[0] !== "http://www" && longURL[0] !== "https://www") {
     if (longURL[0] === "www") {
       // input ex: "www.google.com" => add "http://" to [0]
       longURL[0] = "http://" + longURL[0];
