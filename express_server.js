@@ -94,6 +94,10 @@ app.get("/urls/new", (req, res) => {
   const templateVars = {
     user: users[req.session.user_id]
   };
+  // redirect to /login page if not logged in
+  if (!req.session.user_id) {
+    return res.redirect("/login");
+  }
   res.render("urls_new", templateVars);
 });
 
