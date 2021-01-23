@@ -14,7 +14,6 @@
 </head>
 
 <body>
-  <!-- add partial template for header -->
   <%- include("partials/_header") %>
 
   <div class="card text-center">
@@ -27,26 +26,26 @@
           <h4 class="alert-heading text-center">Uh Oh! Lost on Your Travels?</h4>
           <p class="text-center">Looks like this URL belongs to another user, so no peeking!</p>
           <hr>
-          <p class="text-center font-weight-light">Only logged in users can see their URLs. <a href="/login" class="alert-link font-weight-normal">Click here to login</a>.</p>
+          <p class="text-center font-weight-light">Only logged in users can see their own URLs. <br>
+            <a href="/login" class="alert-link font-weight-normal">Click here to login</a>.</p>
         </div>
       <% } else { %>
 
-      <!-- Print/show data received from express_server.js -->
+      <!-- Show shortURL details >> short- and longURL -->
       <h5 class="card-title">TinyURL for: <%= longURL %></h5>
       <p class="card-text">Short URL: <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
     </div>
 
     <br>
     <div class="card-footer text-muted">
-      <!-- Add an "update" form with button -->
-      <!-- form tag: "action" says to which URL to submit the form, "method" tells which HTTP method to use when submitting -->
+      <!-- Form to update longURL for current shortURL -->
       <div style="margin: auto;">
         <h4 class="card-title">Edit</h4>
         <form class="form-inline" action="/urls/<%= shortURL %>" method="POST">
           <div class="form-group mb-2" style="margin: auto;">
-            <label for="longURL">New URL:</label>
-            <!-- input tag: "name" id's data we're sending on form submission -->
-            <input class="form-control" type="text" name="longURL" placeholder="http://" style="width: 300px; margin: 1em">
+            <label for="longURL">New long URL:</label>
+            <!-- Show the current corresponding long URL -->
+            <input class="form-control" type="text" name="longURL" value="<%= longURL %>" style="width: 300px; margin: 1em">
             <!-- add a hidden field to pass the shortURL to server -->
             <input type="hidden" name="shortURL" value= <%= shortURL %> >
             <button type="submit" class="btn btn-primary">Update</button>
