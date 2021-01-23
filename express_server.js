@@ -53,9 +53,13 @@ const users = {
 // ------------------------------------------------------------
 // ENDPOINTS / ROUTE HANDLING
 // ------------------------------------------------------------
-// Root Path "/"
+// GET / (ROOT)
 app.get("/", (req, res) => {
-  res.redirect("/urls");
+  // redirect to /urls if logged in, else to /login
+  if (req.session.user_id) {
+    return res.redirect("/urls");
+  }
+  return res.redirect("/login");
 });
 
 
